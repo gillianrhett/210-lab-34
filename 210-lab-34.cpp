@@ -40,6 +40,11 @@ class Graph {
     }
 };
 
+// function prototypes
+// I used ChatGPT because I have never used AI to write code before and ChatGPT is free and has an easy user interface
+void DFSUtil(const Graph& graph, int v, vector<bool>& visited); // Recursive helper function
+void DFS(const Graph& graph, int startVertex); // Main DFS function
+
 int main() {
     // Creates a vector of graph edges/weights
     vector<Edge> edges = {
@@ -50,5 +55,33 @@ int main() {
     Graph graph(edges);
     // Prints adjacency list representation of graph
     graph.printGraph();
+
+    // driver to test the DFS function
+    DFS(graph, )
+
     return 0;
+}
+
+// Recursive helper function -- by ChatGPT
+void DFSUtil(const Graph& graph, int v, vector<bool>& visited) {
+    visited[v] = true;
+    cout << v << " ";
+
+    // Visit all adjacent vertices
+    for (const Pair& neighbor : graph.adjList[v]) {
+        int adjacentVertex = neighbor.first;
+        if (!visited[adjacentVertex]) {
+            DFSUtil(graph, adjacentVertex, visited);
+        }
+    }
+}
+
+// Main DFS function -- by ChatGPT
+void DFS(const Graph& graph, int startVertex) {
+    vector<bool> visited(SIZE, false);
+
+    cout << "DFS starting from vertex " << startVertex << ": ";
+
+    DFSUtil(graph, startVertex, visited);
+    cout << endl;
 }

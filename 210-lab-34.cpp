@@ -1,7 +1,7 @@
 // COMSC 210 | Lab 34 | Gillian Rhett
 #include <iostream>
 #include <vector>
-#include <queue> // for breadth first search function
+#include <queue> // for breadth first search function and minimum spanning tree function
 #include <algorithm> // for reversing a vector in the shortestPath function
 #include <string> // for input validation
 using namespace std;
@@ -49,7 +49,7 @@ void DFSUtil(const Graph&, int, vector<bool>&); // Recursive helper function for
 void DFS(const Graph&, int); // main depth first search function
 void BFS(const Graph&, int); // breadth first search funciton
 void shortestPath(const Graph&, const vector<string>&, int, int); // finds and displays the shortest path between two nodes
-void minimumSpanningTree(const Graph&);
+void minimumSpanningTree(const Graph&, const vector<string>&); // displays the shortest route to visit every city
 int getInt(); // my own function for validating user input
 
 int main() {
@@ -128,6 +128,8 @@ int main() {
 
     return 0;
 }
+
+ // ============================= FUNCTION DEFINITIONS ==============================================
 
 void DFSUtil(const Graph& graph, int v, vector<bool>& visited) {
 // Recursive helper function for DFS -- by ChatGPT
@@ -258,8 +260,52 @@ int getInt() {
     return num_in;
 }
 
-void minimumSpanningTree(const Graph& graph) {
-// 
-    cout << "Minimum Spanning Tree edges:" << endl;
-    //Edge from 1 to 0 with capacity: 8 units
+void minimumSpanningTree(const Graph& graph, const vector<string>& cities) {
+// finds and displays the shortest route to visit every city -- by ChatGPT
+    vector<int> key(SIZE, INT_MAX);     // Minimum weight to connect
+    vector<int> parent(SIZE, -1);       // Store MST
+    vector<bool> inMST(SIZE, false);    // Track included nodes
+
+    key[0] = 0; // Start from node 0 (San Francisco)
+
+    for (int count = 0; count < SIZE - 1; count++) {
+        int u = -1;
+        int minKey = INT_MAX;
+
+        // Find vertex with minimum key not yet included
+        for (int v = 0; v < SIZE; v++) {
+            if (!inMST[v] && key[v] < minKey) {
+                minKey = key[v];
+                u = v;
+            }
+        }
+
+        if (u == -1) break;
+
+        inMST[u] = true;
+
+        // Update adjacent vertices
+        for (const Pair& neighbor : graph.adjList[u]) {
+            int v = neighbor.first;
+            int weight = neighbor.second;
+
+            if (!inMST[v] && weight < key[v]) {
+                key[v] = weight;
+                parent[v] = u;
+            }
+        }
+    }
+
+    cout << "\nMinimum Spanning Tree (MST):\n";
+    int totalWeight = 0;
+
+    for (int i = 1; i < SIZE; i++) {
+        if (parent[i] != -1) {
+            cout << cities[parent[i]] << " -> " 
+                 << cities[i] << " (" << key[i] << " miles)\n";
+            totalWeight += key[i];
+        }
+    }
+
+    cout << "Total distance of MST: " << totalWeight << " miles\n";
 }

@@ -49,6 +49,7 @@ void DFSUtil(const Graph&, int, vector<bool>&); // Recursive helper function for
 void DFS(const Graph&, int); // main depth first search function
 void BFS(const Graph&, int); // breadth first search funciton
 void shortestPath(const Graph&, const vector<string>&, int, int); // finds and displays the shortest path between two nodes
+void minimumSpanningTree(const Graph&);
 int getInt(); // my own function for validating user input
 
 int main() {
@@ -255,4 +256,10 @@ int getInt() {
         }        
     }
     return num_in;
+}
+
+void minimumSpanningTree(const Graph& graph) {
+// 
+    cout << "Minimum Spanning Tree edges:" << endl;
+    //Edge from 1 to 0 with capacity: 8 units
 }

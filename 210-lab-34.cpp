@@ -46,6 +46,7 @@ class Graph {
 void DFSUtil(const Graph&, int, vector<bool>&); // Recursive helper function for DFS()
 void DFS(const Graph&, int); // main depth first search function
 void BFS(const Graph&, int); // breadth first search funciton
+void shortestPath(const Graph&, const vector<string>&, int, int); // finds and displays the shortest path between two nodes
 
 int main() {
     /* I commented out steps 1 and 2
@@ -102,11 +103,14 @@ int main() {
         cout << endl;
     }
 
+    // Step 4: shortest path
+    shortestPath(map, cities, 2, 4);
+
     return 0;
 }
 
-// Recursive helper function -- by ChatGPT
 void DFSUtil(const Graph& graph, int v, vector<bool>& visited) {
+// Recursive helper function for DFS -- by ChatGPT
     visited[v] = true;
     cout << v << " ";
 
@@ -119,8 +123,9 @@ void DFSUtil(const Graph& graph, int v, vector<bool>& visited) {
     }
 }
 
-// Main DFS function -- by ChatGPT
+
 void DFS(const Graph& graph, int startVertex) {
+// Depth First Search -- by ChatGPT
     vector<bool> visited(SIZE, false);
 
     cout << "DFS starting from vertex " << startVertex << ": " << endl;
@@ -130,6 +135,7 @@ void DFS(const Graph& graph, int startVertex) {
 }
 
 void BFS(const Graph& graph, int startVertex) {
+// Breadth First Search -- by ChatGPT
     vector<bool> visited(SIZE, false);
     queue<int> q;
 
@@ -156,4 +162,61 @@ void BFS(const Graph& graph, int startVertex) {
         }
     }
     cout << endl;
+}
+
+void shortestPath(const Graph& graph, const vector<string>& cities, int start, int destination) {
+// Finds the shortest path between two cities using Dijkstra's Algorithm -- by ChatGPT
+    vector<int> distance(SIZE, INT_MAX);
+    vector<int> previous(SIZE, -1);
+    vector<bool> visited(SIZE, false);
+
+    distance[start] = 0;
+
+    for (int i = 0; i < SIZE; ++i) {
+        int current = -1;
+        int minDistance = INT_MAX;
+
+        for (int j = 0; j < SIZE; ++j) {
+            if (!visited[j] && distance[j] < minDistance) {
+                minDistance = distance[j];
+                current = j;
+            }
+        }
+
+        if (current == -1) break;
+        visited[current] = true;
+
+        for (const Pair& neighbor : graph.adjList[current]) {
+            int next = neighbor.first;
+            int weight = neighbor.second;
+
+            if (!visited[next] && distance[current] + weight < distance[next]) {
+                distance[next] = distance[current] + weight;
+                previous[next] = current;
+            }
+        }
+    }
+
+    if (distance[destination] == INT_MAX) {
+        cout << "No route exists between " << cities[start]
+             << " and " << cities[destination] << "." << endl;
+        return;
+    }
+
+    vector<int> path;
+    for (int at = destination; at != -1; at = previous[at]) {
+        path.push_back(at);
+    }
+
+    reverse(path.begin(), path.end());
+
+    cout << "Shortest route from " << cities[start]
+         << " to " << cities[destination] << ": ";
+
+    for (size_t i = 0; i < path.size(); ++i) {
+        cout << cities[path[i]];
+        if (i < path.size() - 1) cout << " -> ";
+    }
+
+    cout << " (" << distance[destination] << " miles)" << endl;
 }

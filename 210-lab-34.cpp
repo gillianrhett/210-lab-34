@@ -91,9 +91,10 @@ int main() {
         {4, 5, 220},  // Fresno <-> Los Angeles
         {2, 4, 150},  // San Jose <-> Fresno
         {2, 5, 340},  // San Jose <-> Los Angeles
-        // I added these two myself:
+        // I added these three myself:
         {1, 7, 19},   // Oakland <-> Pleasant Hill
-        {2, 7, 49}    // San Jose <-> Pleasant Hill
+        {2, 7, 49},   // San Jose <-> Pleasant Hill
+        {3, 7, 68}    // Sacramento <-> Pleasant Hill
     };
 
     Graph map(routes);
@@ -132,33 +133,65 @@ int main() {
 
     cout << "City Routes Menu:" << endl;
     cout << "[1] Display distances of all available routes to adjacent cities" << endl;
-    cout << "[2] Plan touring routes (BFS)" << endl;
-    cout << "[3] Plan direct travel routes (DFS)" << endl;
+    cout << "[2] Display touring route (BFS)" << endl;
+    cout << "[3] Display direct travel route (DFS)" << endl;
     cout << "[4] Calculate shortest path between two cities" << endl;
     cout << "[5] Find Minimum Spanning Tree" << endl;
     cout << "[0] Exit" << endl;
-    cout << "Enter your choice: ";
+    cout << "Your choice ";
 
     int choice = 1;
     while (choice != 0) {
         choice = getInt(5);
-        if(choice == 1) {
+        if(choice == 1) { // display all the nodes and edges
+            cout << "California Route Map\n";
+            cout << "====================\n\n";
+
+            for (int i = 0; i < SIZE; i++) {
+                cout << cities[i] << " connects to:\n";
+
+                for (const Pair& route : map.adjList[i]) {
+                    cout << "  -> " << cities[route.first]
+                        << " (" << route.second << " miles)\n";
+                }
+                cout << endl;
+            }
+        }
+
+        if(choice == 2) { // breadth first search
+            cout << "= Touring Route =" << endl;
+            cout << "Starting city ";
+            int city = getInt(SIZE - 1);
+            BFS(map, city); // TODO change this and 3 to let user pick the starting city
+        }
+
+        if(choice == 3) { // depth first search
+            DFS(map, 0);
+        }
+
+        if(choice == 4) { // shortest path
+            cout << "= Shortest path =" << endl;
+            cout << "\t0 San Francisco" << endl;
+            cout << "\t1 Oakland" << endl;
+            cout << "\t2 San Jose" << endl;
+            cout << "\t3 Sacramento" << endl;
+            cout << "\t4 Fresno" << endl;
+            cout << "\t5 Los Angeles" << endl;
+            cout << "\t6 San Diego" << endl;
+            cout << "\t7 Pleasant Hill" << endl;
+            cout << "First city" << endl;
+            int city1 = getInt(SIZE - 1);
+            cout << "Second city" << endl;
+            int city2 = getInt(SIZE - 1);
+            shortestPath(map, cities, city1, city2);
+        }
+
+        if(choice == 5) {
 
         }
-        if(choice == 1) {
 
-        }
-        if(choice == 1) {
-
-        }
-        if(choice == 1) {
-
-        }
-        if(choice == 1) {
-
-        }
         if(choice == 0) {
-
+            cout << "Goodbye" << endl;
         }
     }
 
@@ -186,7 +219,7 @@ void DFS(const Graph& graph, int startVertex) {
 // Depth First Search -- by ChatGPT
     vector<bool> visited(SIZE, false);
 
-    cout << "DFS starting from vertex " << startVertex << ": " << endl;
+    cout << "DFS starting from vertex " << startVertex << ": " << endl; // TODO change this to city-relevant text
 
     DFSUtil(graph, startVertex, visited);
     cout << endl;
@@ -201,7 +234,7 @@ void BFS(const Graph& graph, int startVertex) {
     visited[startVertex] = true;
     q.push(startVertex);
 
-    cout << "Breadth-First Search starting from vertex " << startVertex << ": " << endl;
+    cout << "Breadth-First Search starting from vertex " << startVertex << ": " << endl; // TODO change this to city-relevant text
 
     while (!q.empty()) {
         int current = q.front();
@@ -283,7 +316,7 @@ int getInt(int max) {
     int num_in = -1;
     string temp_input;
     while(num_in < 0 || num_in > max) {
-        cout << "\tenter a number (0 to " << max << "): ";
+        cout << "enter a number (0 to " << max << "): ";
         cin >> temp_input;
         try {
             num_in = stoi(temp_input);

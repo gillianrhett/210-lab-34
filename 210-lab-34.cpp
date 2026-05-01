@@ -44,13 +44,13 @@ class Graph {
 };
 
 // function prototypes
-// I used ChatGPT because I have never used AI to write code before and ChatGPT is free and has an easy user interface
+// I used ChatGPT because I have never used AI to write code before and ChatGPT is cheap (I ended up paying $8 for the good version) and has an easy user interface
 void DFSUtil(const Graph&, int, vector<bool>&); // Recursive helper function for DFS()
 void DFS(const Graph&, int); // main depth first search function
 void BFS(const Graph&, int); // breadth first search funciton
 void shortestPath(const Graph&, const vector<string>&, int, int); // finds and displays the shortest path between two nodes
-void minimumSpanningTree(const Graph&, const vector<string>&); // displays the shortest route to visit every city
-int getInt(); // my own function for validating user input
+void minimumSpanningTree(const Graph&, const vector<string>&); // displays the smallest (shortest total distance) version of the graph where every city is connected
+int getInt(int); // my own function for validating user input
 
 int main() {
     /* I commented out steps 1 and 2
@@ -97,7 +97,7 @@ int main() {
     };
 
     Graph map(routes);
-
+/* commenting out the demos of steps before 6
     cout << "California Route Map\n";
     cout << "====================\n\n";
 
@@ -125,6 +125,42 @@ int main() {
     cout << "Second city" << endl;
     int city2 = getInt();
     shortestPath(map, cities, city1, city2);
+
+    cout << "\nStep 5: Minimum Spanning Tree\n";
+    minimumSpanningTree(map, cities);
+*/
+
+    cout << "City Routes Menu:" << endl;
+    cout << "[1] Display distances of all available routes to adjacent cities" << endl;
+    cout << "[2] Plan touring routes (BFS)" << endl;
+    cout << "[3] Plan direct travel routes (DFS)" << endl;
+    cout << "[4] Calculate shortest path between two cities" << endl;
+    cout << "[5] Find Minimum Spanning Tree" << endl;
+    cout << "[0] Exit" << endl;
+    cout << "Enter your choice: ";
+
+    int choice = 1;
+    while (choice != 0) {
+        choice = getInt(5);
+        if(choice == 1) {
+
+        }
+        if(choice == 1) {
+
+        }
+        if(choice == 1) {
+
+        }
+        if(choice == 1) {
+
+        }
+        if(choice == 1) {
+
+        }
+        if(choice == 0) {
+
+        }
+    }
 
     return 0;
 }
@@ -243,11 +279,11 @@ void shortestPath(const Graph& graph, const vector<string>& cities, int start, i
     cout << " (" << distance[destination] << " miles)" << endl;
 }
 
-int getInt() {
+int getInt(int max) {
     int num_in = -1;
     string temp_input;
-    while(num_in < 0 || num_in >= SIZE) {
-        cout << "\tenter a number of the city (0 to " << SIZE - 1 << "): ";
+    while(num_in < 0 || num_in > max) {
+        cout << "\tenter a number (0 to " << max << "): ";
         cin >> temp_input;
         try {
             num_in = stoi(temp_input);
@@ -261,7 +297,7 @@ int getInt() {
 }
 
 void minimumSpanningTree(const Graph& graph, const vector<string>& cities) {
-// finds and displays the shortest route to visit every city -- by ChatGPT
+// displays the smallest (shortest total distance) version of the graph where every city is connected -- by ChatGPT
     vector<int> key(SIZE, INT_MAX);     // Minimum weight to connect
     vector<int> parent(SIZE, -1);       // Store MST
     vector<bool> inMST(SIZE, false);    // Track included nodes

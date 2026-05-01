@@ -3,7 +3,7 @@
 #include <vector>
 #include <queue> // for BFS
 using namespace std;
-const int SIZE = 13;
+const int SIZE = 7;
 struct Edge {
     int src, dest, weight;
 };
@@ -48,6 +48,7 @@ void DFS(const Graph&, int); // main depth first search function
 void BFS(const Graph&, int); // breadth first search funciton
 
 int main() {
+    /* I commented out steps 1 and 2
     // Creates a vector of graph edges/weights
     vector<Edge> edges = {
         // (x, y, w) —> edge from x to y having weight w
@@ -66,6 +67,40 @@ int main() {
     // driver to test the DFS function
     DFS(graph, 0);
     BFS(graph, 0);
+    */
+
+    // Step 3, also made by ChatGPT
+    vector<string> cities = {
+        "San Francisco", "Oakland", "San Jose",
+        "Sacramento", "Fresno", "Los Angeles", "San Diego"
+    };
+
+    vector<Edge> routes = {
+        {0, 1, 13},   // San Francisco <-> Oakland
+        {0, 2, 48},   // San Francisco <-> San Jose
+        {0, 3, 87},   // San Francisco <-> Sacramento
+        {2, 3, 120},  // San Jose <-> Sacramento
+        {2, 6, 460},  // San Jose <-> San Diego
+        {5, 6, 120},  // Los Angeles <-> San Diego
+        {4, 5, 220},  // Fresno <-> Los Angeles
+        {2, 4, 150},  // San Jose <-> Fresno
+        {2, 5, 340}   // San Jose <-> Los Angeles
+    };
+
+    Graph map(routes);
+
+    cout << "California Route Map\n";
+    cout << "====================\n\n";
+
+    for (int i = 0; i < SIZE; i++) {
+        cout << cities[i] << " connects to:\n";
+
+        for (const Pair& route : map.adjList[i]) {
+            cout << "  -> " << cities[route.first]
+                 << " (" << route.second << " miles)\n";
+        }
+        cout << endl;
+    }
 
     return 0;
 }

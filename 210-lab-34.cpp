@@ -3,7 +3,7 @@
 #include <vector>
 #include <queue> // for BFS
 using namespace std;
-const int SIZE = 7;
+const int SIZE = 13;
 struct Edge {
     int src, dest, weight;
 };
@@ -54,8 +54,8 @@ int main() {
         // {0,1,12},{0,2,8},{0,3,21},{2,3,6},{2,6,2},{5,6,6},{4,5,9},{2,4,4},{2,5,5} // from step 1
         // Step 2: Change the graph by deleting at least two nodes and adding at least six nodes. 
         //    Change the weights as well.
-        {2,3,10}, {2,4,12}, {2,5,5}, {2,6,2}, {4,5,3}, {5,6,1}, {4,7,20}, {5,7,6}, {5,8,7}, {6,8,4}, {}, {},
-         // for step 2 I deleted nodes 0 and 1
+        //    I deleted nodes 1 and 3
+        {0,2,8},{2,6,2},{5,6,6},{4,5,9},{2,4,4},{2,5,5},{4,7,1},{7,8,3},{6,9,10},{8,9,12},
     };
     // Creates graph
     Graph graph(edges);

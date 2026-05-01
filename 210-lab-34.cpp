@@ -46,8 +46,8 @@ class Graph {
 // function prototypes
 // I used ChatGPT because I have never used AI to write code before and ChatGPT is cheap (I ended up paying $8 for the good version) and has an easy user interface
 void DFSUtil(const Graph&, int, vector<bool>&); // Recursive helper function for DFS()
-void DFS(const Graph&, int); // main depth first search function
-void BFS(const Graph&, int); // breadth first search funciton
+void DFS(const Graph&, const vector<string>&, int); // main depth first search function
+void BFS(const Graph&, const vector<string>&, int); // breadth first search funciton
 void shortestPath(const Graph&, const vector<string>&, int, int); // finds and displays the shortest path between two nodes
 void minimumSpanningTree(const Graph&, const vector<string>&); // displays the smallest (shortest total distance) version of the graph where every city is connected
 int getInt(int); // my own function for validating user input
@@ -162,15 +162,19 @@ int main() {
             cout << "= Touring Route =" << endl;
             cout << "Starting city ";
             int city = getInt(SIZE - 1);
-            BFS(map, city); // TODO change this and 3 to let user pick the starting city
+            BFS(map, cities, city);
         }
 
         if(choice == 3) { // depth first search
-            DFS(map, 0);
+            cout << "= Route to Visit Cities =" << endl;
+            cout << "Starting city ";
+            int city = getInt(SIZE - 1);
+            DFS(map, cities, city);
         }
 
         if(choice == 4) { // shortest path
             cout << "= Shortest path =" << endl;
+            cout << "Cities menu:" << endl;
             cout << "\t0 San Francisco" << endl;
             cout << "\t1 Oakland" << endl;
             cout << "\t2 San Jose" << endl;
@@ -187,7 +191,7 @@ int main() {
         }
 
         if(choice == 5) {
-
+            
         }
 
         if(choice == 0) {
@@ -215,18 +219,20 @@ void DFSUtil(const Graph& graph, int v, vector<bool>& visited) {
 }
 
 
-void DFS(const Graph& graph, int startVertex) {
+void DFS(const Graph& graph, const vector<string> names, int startVertex) {
 // Depth First Search -- by ChatGPT
+//   I edited this to display the city names instead of ints
     vector<bool> visited(SIZE, false);
 
-    cout << "DFS starting from vertex " << startVertex << ": " << endl; // TODO change this to city-relevant text
+    cout << "Route to visit all cities starting from " << names.at(startVertex) << ":" << endl;
 
     DFSUtil(graph, startVertex, visited);
     cout << endl;
 }
 
-void BFS(const Graph& graph, int startVertex) {
+void BFS(const Graph& graph, const vector<string>& names, int startVertex) {
 // Breadth First Search -- by ChatGPT
+//   I edited this to display the city names instead of ints
     vector<bool> visited(SIZE, false);
     queue<int> q;
 
@@ -234,13 +240,13 @@ void BFS(const Graph& graph, int startVertex) {
     visited[startVertex] = true;
     q.push(startVertex);
 
-    cout << "Breadth-First Search starting from vertex " << startVertex << ": " << endl; // TODO change this to city-relevant text
+    cout << "Tour of California cities starting from " << names.at(startVertex) << ":" << endl;
 
     while (!q.empty()) {
         int current = q.front();
         q.pop();
 
-        cout << current << " ";
+        cout << names.at(current) << endl;
 
         // Visit all adjacent vertices
         for (const Pair& neighbor : graph.adjList[current]) {

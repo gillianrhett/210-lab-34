@@ -45,7 +45,7 @@ class Graph {
 
 // function prototypes
 // I used ChatGPT because I have never used AI to write code before and ChatGPT is cheap (I ended up paying $8 for the good version) and has an easy user interface
-void DFSUtil(const Graph&, int, vector<bool>&); // Recursive helper function for DFS()
+void DFSUtil(const Graph&, int, vector<bool>&, const vector<string>&); // Recursive helper function for DFS()
 void DFS(const Graph&, const vector<string>&, int); // main depth first search function
 void BFS(const Graph&, const vector<string>&, int); // breadth first search funciton
 void shortestPath(const Graph&, const vector<string>&, int, int); // finds and displays the shortest path between two nodes
@@ -131,12 +131,13 @@ int main() {
     minimumSpanningTree(map, cities);
 */
 
+    // menu and choices - I wrote this part myself
     cout << "City Routes Menu:" << endl;
     cout << "[1] Display distances of all available routes to adjacent cities" << endl;
     cout << "[2] Display touring route (BFS)" << endl;
     cout << "[3] Display direct travel route (DFS)" << endl;
     cout << "[4] Calculate shortest path between two cities" << endl;
-    cout << "[5] Find Minimum Spanning Tree" << endl;
+    cout << "[5] Shortest network of roads connecting all cities (MST)" << endl;
     cout << "[0] Exit" << endl;
     cout << "Your choice ";
 
@@ -163,6 +164,7 @@ int main() {
             cout << "Starting city ";
             int city = getInt(SIZE - 1);
             BFS(map, cities, city);
+            cout << endl;
         }
 
         if(choice == 3) { // depth first search
@@ -170,6 +172,7 @@ int main() {
             cout << "Starting city ";
             int city = getInt(SIZE - 1);
             DFS(map, cities, city);
+            cout << endl;
         }
 
         if(choice == 4) { // shortest path
@@ -188,10 +191,13 @@ int main() {
             cout << "Second city" << endl;
             int city2 = getInt(SIZE - 1);
             shortestPath(map, cities, city1, city2);
+            cout << endl;
         }
 
-        if(choice == 5) {
-            
+        if(choice == 5) { // minimum spanning tree
+            cout << "= Smallest network of roads connecting all cities =" << endl;
+            minimumSpanningTree(map, cities);
+            cout << endl;
         }
 
         if(choice == 0) {
@@ -202,37 +208,36 @@ int main() {
     return 0;
 }
 
- // ============================= FUNCTION DEFINITIONS ==============================================
-
-void DFSUtil(const Graph& graph, int v, vector<bool>& visited) {
+void DFSUtil(const Graph& graph, int v, vector<bool>& visited, const vector<string>& names) {
 // Recursive helper function for DFS -- by ChatGPT
+//  but I edited it to make it show the names of cities
     visited[v] = true;
-    cout << v << " ";
+    cout << "\t" << names.at(v) << endl;
 
     // Visit all adjacent vertices
     for (const Pair& neighbor : graph.adjList[v]) {
         int adjacentVertex = neighbor.first;
         if (!visited[adjacentVertex]) {
-            DFSUtil(graph, adjacentVertex, visited);
+            DFSUtil(graph, adjacentVertex, visited, names);
         }
     }
 }
 
 
-void DFS(const Graph& graph, const vector<string> names, int startVertex) {
+void DFS(const Graph& graph, const vector<string>& names, int startVertex) {
 // Depth First Search -- by ChatGPT
-//   I edited this to display the city names instead of ints
+//   I edited this and its helper function above to display the city names instead of ints
     vector<bool> visited(SIZE, false);
 
     cout << "Route to visit all cities starting from " << names.at(startVertex) << ":" << endl;
 
-    DFSUtil(graph, startVertex, visited);
+    DFSUtil(graph, startVertex, visited, names);
     cout << endl;
 }
 
 void BFS(const Graph& graph, const vector<string>& names, int startVertex) {
 // Breadth First Search -- by ChatGPT
-//   I edited this to display the city names instead of ints
+//   I edited this to display the city names instead of ints too
     vector<bool> visited(SIZE, false);
     queue<int> q;
 
@@ -246,7 +251,7 @@ void BFS(const Graph& graph, const vector<string>& names, int startVertex) {
         int current = q.front();
         q.pop();
 
-        cout << names.at(current) << endl;
+        cout << "\t" << names.at(current) << endl;
 
         // Visit all adjacent vertices
         for (const Pair& neighbor : graph.adjList[current]) {
@@ -319,6 +324,7 @@ void shortestPath(const Graph& graph, const vector<string>& cities, int start, i
 }
 
 int getInt(int max) {
+// for validating input - by me
     int num_in = -1;
     string temp_input;
     while(num_in < 0 || num_in > max) {
@@ -328,7 +334,7 @@ int getInt(int max) {
             num_in = stoi(temp_input);
         }
         catch(const exception& e) {
-            cout << "invalid input";
+            cout << "invalid input ";
             num_in = -1;
         }        
     }
@@ -371,12 +377,11 @@ void minimumSpanningTree(const Graph& graph, const vector<string>& cities) {
         }
     }
 
-    cout << "\nMinimum Spanning Tree (MST):\n";
     int totalWeight = 0;
 
     for (int i = 1; i < SIZE; i++) {
         if (parent[i] != -1) {
-            cout << cities[parent[i]] << " -> " 
+            cout << "\t" << cities[parent[i]] << " -> " 
                  << cities[i] << " (" << key[i] << " miles)\n";
             totalWeight += key[i];
         }

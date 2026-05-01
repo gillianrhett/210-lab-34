@@ -5,7 +5,7 @@
 #include <algorithm> // for reversing a vector in the shortestPath function
 #include <string> // for input validation
 using namespace std;
-const int SIZE = 7;
+const int SIZE = 8;
 struct Edge {
     int src, dest, weight;
 };
@@ -76,7 +76,8 @@ int main() {
     // Step 3, also made by ChatGPT
     vector<string> cities = {
         "San Francisco", "Oakland", "San Jose",
-        "Sacramento", "Fresno", "Los Angeles", "San Diego"
+        "Sacramento", "Fresno", "Los Angeles", "San Diego", 
+        "Pleasant Hill" // I added this myself for fun
     };
 
     vector<Edge> routes = {
@@ -88,7 +89,10 @@ int main() {
         {5, 6, 120},  // Los Angeles <-> San Diego
         {4, 5, 220},  // Fresno <-> Los Angeles
         {2, 4, 150},  // San Jose <-> Fresno
-        {2, 5, 340}   // San Jose <-> Los Angeles
+        {2, 5, 340},  // San Jose <-> Los Angeles
+        // I added these two myself:
+        {1, 7, 19},   // Oakland <-> Pleasant Hill
+        {2, 7, 49}    // San Jose <-> Pleasant Hill
     };
 
     Graph map(routes);
@@ -107,9 +111,17 @@ int main() {
     }
 
     cout << "Step 4: shortest path demo" << endl;
-    cout << "First city:" << endl;
+    cout << "\t0 San Francisco" << endl;
+    cout << "\t1 Oakland" << endl;
+    cout << "\t2 San Jose" << endl;
+    cout << "\t3 Sacramento" << endl;
+    cout << "\t4 Fresno" << endl;
+    cout << "\t5 Los Angeles" << endl;
+    cout << "\t6 San Diego" << endl;
+    cout << "\t7 Pleasant Hill" << endl;
+    cout << "First city" << endl;
     int city1 = getInt();
-    cout << "Second city:" << endl;
+    cout << "Second city" << endl;
     int city2 = getInt();
     shortestPath(map, cities, city1, city2);
 
@@ -232,9 +244,8 @@ int getInt() {
     int num_in = -1;
     string temp_input;
     while(num_in < 0 || num_in >= SIZE) {
-        cout << "Enter a number of the city (0 to " << SIZE - 1 << "): ";
+        cout << "\tenter a number of the city (0 to " << SIZE - 1 << "): ";
         cin >> temp_input;
-        string temp_input; // for getting each line from the file
         try {
             num_in = stoi(temp_input);
         }

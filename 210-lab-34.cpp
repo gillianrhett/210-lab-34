@@ -1,7 +1,9 @@
 // COMSC 210 | Lab 34 | Gillian Rhett
 #include <iostream>
 #include <vector>
-#include <queue> // for BFS
+#include <queue> // for breadth first search function
+#include <algorithm> // for reversing a vector in the shortestPath function
+#include <string> // for input validation
 using namespace std;
 const int SIZE = 7;
 struct Edge {
@@ -47,6 +49,7 @@ void DFSUtil(const Graph&, int, vector<bool>&); // Recursive helper function for
 void DFS(const Graph&, int); // main depth first search function
 void BFS(const Graph&, int); // breadth first search funciton
 void shortestPath(const Graph&, const vector<string>&, int, int); // finds and displays the shortest path between two nodes
+int getInt(); // my own function for validating user input
 
 int main() {
     /* I commented out steps 1 and 2
@@ -103,8 +106,12 @@ int main() {
         cout << endl;
     }
 
-    // Step 4: shortest path
-    shortestPath(map, cities, 2, 4);
+    cout << "Step 4: shortest path demo" << endl;
+    cout << "First city:" << endl;
+    int city1 = getInt();
+    cout << "Second city:" << endl;
+    int city2 = getInt();
+    shortestPath(map, cities, city1, city2);
 
     return 0;
 }
@@ -219,4 +226,22 @@ void shortestPath(const Graph& graph, const vector<string>& cities, int start, i
     }
 
     cout << " (" << distance[destination] << " miles)" << endl;
+}
+
+int getInt() {
+    int num_in = -1;
+    string temp_input;
+    while(num_in < 0 || num_in >= SIZE) {
+        cout << "Enter a number of the city (0 to " << SIZE - 1 << "): ";
+        cin >> temp_input;
+        string temp_input; // for getting each line from the file
+        try {
+            num_in = stoi(temp_input);
+        }
+        catch(const exception& e) {
+            cout << "invalid input";
+            num_in = -1;
+        }        
+    }
+    return num_in;
 }

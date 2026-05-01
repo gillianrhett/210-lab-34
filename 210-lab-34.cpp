@@ -55,7 +55,8 @@ int main() {
         // Step 2: Change the graph by deleting at least two nodes and adding at least six nodes. 
         //    Change the weights as well.
         //    I deleted nodes 1 and 3
-        {0,2,8},{2,6,2},{5,6,6},{4,5,9},{2,4,4},{2,5,5},{4,7,1},{7,8,3},{6,9,10},{8,9,12},
+        {0,2,8},{2,6,2},{5,6,6},{4,5,9},{2,4,4},{2,5,5},{4,7,1},{7,8,3},{6,9,10},{8,9,12},{8,10,7},
+        {8,11,11},{8,12,14},{9,12,16}
     };
     // Creates graph
     Graph graph(edges);

@@ -1,6 +1,7 @@
 // COMSC 210 | Lab 34 | Gillian Rhett
 #include <iostream>
 #include <vector>
+#include <queue> // for BFS
 using namespace std;
 const int SIZE = 7;
 struct Edge {
@@ -42,8 +43,9 @@ class Graph {
 
 // function prototypes
 // I used ChatGPT because I have never used AI to write code before and ChatGPT is free and has an easy user interface
-void DFSUtil(const Graph& graph, int v, vector<bool>& visited); // Recursive helper function
-void DFS(const Graph& graph, int startVertex); // Main DFS function
+void DFSUtil(const Graph&, int, vector<bool>&); // Recursive helper function for DFS()
+void DFS(const Graph&, int); // main depth first search function
+void BFS(const Graph&, int); // breadth first search funciton
 
 int main() {
     // Creates a vector of graph edges/weights
@@ -57,7 +59,8 @@ int main() {
     graph.printGraph();
 
     // driver to test the DFS function
-    DFS(graph, )
+    DFS(graph, 0);
+    BFS(graph, 0);
 
     return 0;
 }
@@ -80,8 +83,37 @@ void DFSUtil(const Graph& graph, int v, vector<bool>& visited) {
 void DFS(const Graph& graph, int startVertex) {
     vector<bool> visited(SIZE, false);
 
-    cout << "DFS starting from vertex " << startVertex << ": ";
+    cout << "DFS starting from vertex " << startVertex << ": " << endl;
 
     DFSUtil(graph, startVertex, visited);
+    cout << endl;
+}
+
+void BFS(const Graph& graph, int startVertex) {
+    vector<bool> visited(SIZE, false);
+    queue<int> q;
+
+    // Mark the starting vertex as visited and enqueue it
+    visited[startVertex] = true;
+    q.push(startVertex);
+
+    cout << "Breadth-First Search starting from vertex " << startVertex << ": " << endl;
+
+    while (!q.empty()) {
+        int current = q.front();
+        q.pop();
+
+        cout << current << " ";
+
+        // Visit all adjacent vertices
+        for (const Pair& neighbor : graph.adjList[current]) {
+            int adjacentVertex = neighbor.first;
+
+            if (!visited[adjacentVertex]) {
+                visited[adjacentVertex] = true;
+                q.push(adjacentVertex);
+            }
+        }
+    }
     cout << endl;
 }
